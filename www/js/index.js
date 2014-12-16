@@ -18,39 +18,39 @@
  */
 var app = {
     // Application Constructor
-    initialize: function() {
+    initialize: function () {
         this.bindEvents();
     },
     // Bind Event Listeners
     //
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
-    bindEvents: function() {
+    bindEvents: function () {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
     // deviceready Event Handler
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
+    onDeviceReady: function () {
         app.receivedEvent('deviceready');
-        
+
         try {
-	        bluetoothSerial.isEnabled(
-					    function() {
-					        alert("Bluetooth is enabled");
-					    },
-					    function() {
-					        alert("Bluetooth is *not* enabled");
-					    }
-					);
-				} catch(e) {
-					alert(e);
-				}
-alert('pipi');
+            bluetoothSerial.isEnabled(
+		        function () {
+		            scanForDevices();
+		        },
+		        function () {
+		            alert("Bluetooth *NON* abilitato");
+		        }
+	        );
+        } catch (e) {
+            alert(e);
+        }
+
     },
     // Update DOM on a Received Event
-    receivedEvent: function(id) {
+    receivedEvent: function (id) {
         var parentElement = document.getElementById(id);
         var listeningElement = parentElement.querySelector('.listening');
         var receivedElement = parentElement.querySelector('.received');
@@ -59,5 +59,16 @@ alert('pipi');
         receivedElement.setAttribute('style', 'display:block;');
 
         console.log('Received Event: ' + id);
+    },
+
+    scanForDevices: function () {
+        bluetoothSerial.list(
+            function (results) {
+                alert(JSON.stringify(results));
+            },
+            function (error) {
+                alert(JSON.stringify(error));
+            }
+        );
     }
 };
